@@ -4,7 +4,7 @@ from models.Models import Transaction
 
 class TransactionServices:
     def __init__(self):
-        self.client = AsyncIOMotorClient("mongodb+srv://rakshitvaja2162:maRcsyvVpC5nbIV9@cluster0.ybcc8.mongodb.net/")
+        self.client = AsyncIOMotorClient("MongoURL")
         self.db = self.client['bankingapp']
         self.collection = self.db['transactions']
 
