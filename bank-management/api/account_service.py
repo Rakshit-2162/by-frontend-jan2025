@@ -1,71 +1,55 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from typing import List
 from datetime import datetime
-from enum import Enum
+from fastapi import APIRouter, HTTPException
+from typing import List
+from services.AccountServices import AccountServices
+from services.TransactionServices import TransactionServices
+from models.Models import Account, Transaction, TransactionType
 
-app = FastAPI()
+router = APIRouter()
+account_services = AccountServices()
+transaction_services = TransactionServices()
 
-class AccountType(str, Enum):
-    SAVINGS = "Savings"
-    CURRENT = "Current"
-    LOAN = "Loan"
+@router.get('/accounts', response_model=List[Account])
+async def get_accounts():
+    return await account_services.get_all_accounts()
 
-class Account(BaseModel):
-    id: int
-    name: str
-    type: AccountType
-    balance: float
-    roi: float
-    active: bool
-    createTimeStamp: datetime
-    updateTimeStamp: datetime
-
-account_db = {}
-
-@app.get('/accounts', response_model=List[Account])
-def get_account():
-    return list(account_db.values())
-
-@app.get('/accounts/{id}', response_model=Account)
-def get_account(id: int):
-    if id not in account_db:
+@router.get('/accounts/{id}', response_model=Account)
+async def get_account(id: int):
+    account = await account_services.get_account_by_id(id)
+    if not account:
         raise HTTPException(status_code=404, detail="Account not found")
-    return account_db[id]
-
-@app.post('/accounts', response_model=Account)
-def create_account(account: Account):
-    if account.id in account_db:
-        raise HTTPException(status_code=400, detail="Account already exists!")
-    account_db[account.id] = account
     return account
 
-@app.put('/accounts/{id}', response_model=Account)
-def update_account(id: int, account: Account):
-    if id not in account_db:
-        raise HTTPException(status_code=404, detail="Account not found!")
-    account_db[id] = account
-    return account
+@router.post('/accounts', response_model=Account)
+async def create_account(account: Account):
+    return await account_services.create_account(account)
 
-@app.delete('/accounts/{id}')
-def delete_account(id: int):
-    if id not in account_db:
+@router.put('/accounts/{id}', response_model=Account)
+async def update_account(id: int, account: Account):
+    updated_account = await account_services.update_account(id, account)
+    if not updated_account:
         raise HTTPException(status_code=404, detail="Account not found!")
-    del account_db[id]
+    return updated_account
+
+@router.delete('/accounts/{id}')
+async def delete_account(id: int):
+    success = await account_services.delete_account(id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Account not found!")
     return {"message": "Account deleted successfully!"}
 
-@app.post('/account/{id}/deposits')
-def deposit(id: int, amount: float):
-    if id not in account_db:
+@router.post("/accounts/{id}/deposit")
+async def deposit(id: int, amount: float):
+    updated_balance = await account_services.deposit(id, amount)
+    if not updated_balance:
         raise HTTPException(status_code=404, detail="Account not found!")
-    account_db[id].balance += amount
-    return {'message': 'Deposit successful', 'balance': account_db[id].balance}
 
-@app.post('/accounts/{id}/withdrawal')
-def withdraw(id: int, amount: float):
-    if id not in account_db:
+    return {'message': 'Deposit successful', 'balance': updated_balance}
+
+@router.post("/accounts/{id}/withdraw")
+async def withdraw(id: int, amount: float):
+    updated_balance = await account_services.withdraw(id, amount)
+    if not updated_balance:
         raise HTTPException(status_code=404, detail="Account not found!")
-    if account_db[id].balance < amount:
-        raise HTTPException(status_code=400, detail="Insuffecient balance!")
-    account_db[id].balance -= amount
-    return {'message': 'Withdrawal successful', 'balance': account_db[id].balance}
+
+    return {'message': 'Withdrawal successful', 'balance': updated_balance}
