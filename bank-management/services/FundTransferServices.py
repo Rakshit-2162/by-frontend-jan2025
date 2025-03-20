@@ -5,7 +5,7 @@ from services.AccountServices import AccountServices
 
 class FundTransferServices:
     def __init__(self):
-        self.client = AsyncIOMotorClient("mongodb+srv://rakshitvaja2162:maRcsyvVpC5nbIV9@cluster0.ybcc8.mongodb.net/")
+        self.client = AsyncIOMotorClient("MongoURL")
         self.db = self.client['bankingapp']
         self.collection = self.db['fund-transfers']
         self.account_services = AccountServices()
