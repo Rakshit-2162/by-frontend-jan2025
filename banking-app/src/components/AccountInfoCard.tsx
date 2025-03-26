@@ -1,6 +1,16 @@
 import { colors } from "../assets/colors";
 
-const AccountInfoCard = ({ title, content, active }) => {
+interface AccountInfoCardProps {
+  title: string;
+  content: string;
+  active: boolean;
+}
+
+const AccountInfoCard: React.FC<AccountInfoCardProps> = ({
+  title,
+  content,
+  active,
+}) => {
   return (
     <div>
       <div className="container-fluid">
@@ -11,7 +21,9 @@ const AccountInfoCard = ({ title, content, active }) => {
           <div className="text-secondary fs-6">{title}</div>
           <div className="text-light fs-4">{content}</div>
           <div
-            className={`mx-auto position-absolute bottom-0 start-0 w-100 ${active ? 'bg-primary' : 'bg-danger'} bg-opacity-75 rounded-bottom-4`}
+            className={`mx-auto position-absolute bottom-0 start-0 w-100 ${
+              active ? "bg-primary" : "bg-danger"
+            } bg-opacity-75 rounded-bottom-4`}
             style={{
               height: "10px",
             }}

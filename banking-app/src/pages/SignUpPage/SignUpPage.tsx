@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { colors } from "../../assets/colors";
 import logo from "../../assets/banking-app-logo.png";
 import { Link, useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import { useState } from "react";
 
 // Validation Schema
 const schema = yup.object().shape({
@@ -53,9 +53,12 @@ const SignUpPage = () => {
       alert("Sign-up successful! Please log in."); // Notify user
 
       navigate("/loginPage");
-    } catch (error) {
-      console.error("Error during sign-up:", error.message);
-      setErrorMessage(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setErrorMessage(error.message); // Set error message safely
+      } else {
+        setErrorMessage("An unknown error occurred"); // Fallback message
+      }
     }
   };
 

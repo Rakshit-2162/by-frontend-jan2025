@@ -5,7 +5,7 @@ import { colors } from "../../assets/colors";
 import logo from "../../assets/banking-app-logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../services/apiServices";
-import React, { useState } from "react";
+import { useState } from "react";
 
 const schema = yup.object().shape({
   email: yup
@@ -33,8 +33,12 @@ const LoginPage = () => {
     try {
       await login(data.email, data.password);
       navigate("/dashboard"); // Redirect on successful login
-    } catch (error) {
-      setErrorMessage(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setErrorMessage(error.message); // Set error message safely
+      } else {
+        setErrorMessage("An unknown error occurred"); // Fallback message
+      }
     }
   };
 

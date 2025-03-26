@@ -2,7 +2,15 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { colors } from "../../assets/colors";
 
-const AddAccountForm = ({ onClose, onAccountAdded }) => {
+interface AddAccountFormProps {
+  onClose: () => void;
+  onAccountAdded: () => void;
+}
+
+const AddAccountForm: React.FC<AddAccountFormProps> = ({
+  onClose,
+  onAccountAdded,
+}) => {
   const {
     register,
     handleSubmit,
@@ -42,9 +50,12 @@ const AddAccountForm = ({ onClose, onAccountAdded }) => {
       onAccountAdded(); // Refresh account list
       reset();
       onClose(); // Close modal only on success
-    } catch (error) {
-      console.error("Error adding account:", error);
-      setErrorMessage(error.message); // Set error message
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setErrorMessage(error.message); // Set error message safely
+      } else {
+        setErrorMessage("An unknown error occurred"); // Fallback message
+      }
     }
   };
 

@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { colors } from "../../assets/colors";
 
-const CreateTransactionForm = ({
+interface CreateTransactionFormProp {
+  accountId: number;
+  onClose: () => void;
+  onTransactionCompleted: () => void;
+}
+
+const CreateTransactionForm: React.FC<CreateTransactionFormProp> = ({
   accountId,
   onClose,
   onTransactionCompleted,
@@ -48,9 +54,12 @@ const CreateTransactionForm = ({
       onTransactionCompleted(); // Refresh account list
       reset();
       onClose(); // Close modal only on success
-    } catch (error) {
-      console.error("Error updating account:", error);
-      setErrorMessage(error.message); // Set the error message
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setErrorMessage(error.message); // Set error message safely
+      } else {
+        setErrorMessage("An unknown error occurred"); // Fallback message
+      }
     }
   };
 

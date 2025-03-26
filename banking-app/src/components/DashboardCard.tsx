@@ -2,7 +2,19 @@ import { colors } from "../assets/colors";
 import "../App.css";
 import { Link } from "react-router-dom";
 
-const DashboardCard = ({ title, subtitle, iconClass, route }) => {
+interface DashboardCardProps {
+  title: string;
+  subtitle: string;
+  iconClass: string;
+  route: string;
+}
+
+const DashboardCard: React.FC<DashboardCardProps> = ({
+  title,
+  subtitle,
+  iconClass,
+  route,
+}) => {
   return (
     <Link to={`${route}`} className="text-decoration-none">
       <div className="container-fluid">

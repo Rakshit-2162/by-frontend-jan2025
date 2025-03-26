@@ -2,7 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { colors } from "../../assets/colors";
 
-const FundTransferForm = ({ onClose, onTransferComplete }) => {
+interface FundTransferFormProps {
+  onClose: () => void;
+  onTransferComplete: () => void;
+}
+
+const FundTransferForm: React.FC<FundTransferFormProps> = ({
+  onClose,
+  onTransferComplete,
+}) => {
   const {
     register,
     handleSubmit,
@@ -21,32 +29,37 @@ const FundTransferForm = ({ onClose, onTransferComplete }) => {
   const onSubmit = async (data: any) => {
     try {
       setErrorMessage("");
-  
+
       // Log request payload
       console.log("Submitting Data:", JSON.stringify(data));
-  
-      const response = await fetch("http://127.0.0.1:8000/fund_transfer_service/fundTransfers", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-  
+
+      const response = await fetch(
+        "http://127.0.0.1:8000/fund_transfer_service/fundTransfers",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }
+      );
+
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error Response:", errorData);
         throw new Error(errorData.detail || "Fund Transfer failed");
       }
-  
+
       await response.json();
       onTransferComplete();
       reset();
       onClose();
-    } catch (error) {
-      console.error("Error processing transfer:", error);
-      setErrorMessage(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setErrorMessage(error.message); // Set error message safely
+      } else {
+        setErrorMessage("An unknown error occurred"); // Fallback message
+      }
     }
   };
-  
 
   return (
     <div>

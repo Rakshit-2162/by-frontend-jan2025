@@ -1,8 +1,15 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { colors } from "../../assets/colors";
+import { Account } from "../../models/Models";
 
-const UpdateAccountForm = ({ account, onClose, onAccountUpdated }) => {
+interface UpdateAccountFormProps {
+  account: Account;
+  onClose: () => void;
+  onAccountUpdated: () => void;
+}
+
+const UpdateAccountForm: React.FC<UpdateAccountFormProps> = ({ account, onClose, onAccountUpdated }) => {
   const {
     register,
     handleSubmit,
@@ -172,7 +179,7 @@ const UpdateAccountForm = ({ account, onClose, onAccountUpdated }) => {
               <input
                 type="hidden"
                 {...register("createTimeStamp")}
-                value={account.createTimeStamp}
+                value={account.createTimeStamp.toISOString()}
               />
 
               {/* Hidden Update Timestamp */}
