@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+typing
+enum
+datetime
+pydantic
+motor
+dotenv

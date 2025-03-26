@@ -1,0 +1,41 @@
+:root {
+  --primary: #101624;
+  --secondary: #212434;
+  --light-bg: #eff3fb;
+  --dark-bg: #2f2f40;
+  --active-blue: #007aff;
+  --font-color: #ffffff;
+  --light-text: rgba(255, 254, 254, 0.769);
+}
+
+body {
+  background-color: var(--primary) !important;
+  color: var(--font-color) !important;
+  margin: 0;
+  padding: 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif !important;
+  /* overflow-x: visible !important; */
+}
+
+.navbar-nav .nav-link {
+  color: var(--light-text) !important; /* Force white text */
+}
+
+.navbar-nav .nav-link:hover {
+  color: var(--font-color) !important; /* Change color on hover */
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.413) !important;
+}
+
+input[type="number"] {
+  appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
