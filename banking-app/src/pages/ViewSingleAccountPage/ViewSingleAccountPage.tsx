@@ -68,29 +68,29 @@ const ViewSingleAccountPage = () => {
             <div className="col-lg-3 col-md-6 col-sm-12">
               <AccountInfoCard
                 title="Account Type"
-                content={account?.type}
-                active={account?.active}
+                content={account?.type ?? "N/A"}
+                active={account?.active ?? false}
               />
             </div>
             <div className="col-lg-3 col-md-6 col-sm-12">
               <AccountInfoCard
                 title="Balance"
                 content={"₹: " + account?.balance.toLocaleString()}
-                active={account?.active}
+                active={account?.active ?? false}
               />
             </div>
             <div className="col-lg-3 col-md-6 col-sm-12">
               <AccountInfoCard
                 title="Rate of Interest"
                 content={account?.roi + " %"}
-                active={account?.active}
+                active={account?.active ?? false}
               />
             </div>
             <div className="col-lg-3 col-md-6 col-sm-12">
               <AccountInfoCard
                 title="Created At"
                 content={formatDate_ddMMyyyy(account?.createTimeStamp)}
-                active={account?.active}
+                active={account?.active ?? false}
               />
             </div>
           </div>
