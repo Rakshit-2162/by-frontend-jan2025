@@ -8,12 +8,8 @@ load_dotenv()
 
 class FundTransferServices:
     def __init__(self):
-<<<<<<< HEAD:bank-management/services/FundTransferServices.py
-        self.client = AsyncIOMotorClient("MongoURL")
-=======
         mongo_url = os.getenv("MONGODB_URL")
         self.client = AsyncIOMotorClient(mongo_url)
->>>>>>> d6c0024 (Final Commit):banking-app-backend/services/FundTransferServices.py
         self.db = self.client['bankingapp']
         self.collection = self.db['fund-transfers']
         self.account_services = AccountServices()

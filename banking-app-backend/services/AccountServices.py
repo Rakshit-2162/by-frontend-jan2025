@@ -9,12 +9,8 @@ load_dotenv()
 
 class AccountServices:
     def __init__(self):
-<<<<<<< HEAD:bank-management/services/AccountServices.py
-        self.client = AsyncIOMotorClient("MongoURL")
-=======
         mongo_url = os.getenv("MONGODB_URL")
         self.client = AsyncIOMotorClient(mongo_url)
->>>>>>> d6c0024 (Final Commit):banking-app-backend/services/AccountServices.py
         self.db = self.client['bankingapp']
         self.collection = self.db['accounts']
         self.transaction_services = TransactionServices()
