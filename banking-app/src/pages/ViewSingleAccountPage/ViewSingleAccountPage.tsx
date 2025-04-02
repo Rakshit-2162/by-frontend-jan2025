@@ -7,6 +7,7 @@ import AccountInfoCard from "../../components/AccountInfoCard";
 import TransactionDetaildsCard from "../../components/TransactionDetaildsCard";
 import UpdateAccountForm from "../../components/forms/UpdateAccountForm";
 import CreateTransactionForm from "../../components/forms/CreateTransactionForm";
+import { colors } from "../../assets/colors";
 
 export const formatDate_ddMMyyyy = (dateString?: string | Date) => {
   if (!dateString) return "N/A"; // Handle undefined or null values safely
@@ -27,6 +28,7 @@ const ViewSingleAccountPage = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [showEditForm, setShowEditForm] = useState(false);
   const [showTransactionForm, setCreateTransactionForm] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
 
   useEffect(() => {
     fetchAccount();
@@ -124,7 +126,13 @@ const ViewSingleAccountPage = () => {
       >
         <button
           className="btn btn-light rounded-start-pill px-4 py-2 w-50 fs-5 fw-bolder"
-          onClick={() => setCreateTransactionForm(true)}
+          onClick={() => {
+            if (!account?.active) {
+              setShowDialog(true);
+              return;
+            }
+            setCreateTransactionForm(true);
+          }}
         >
           <i className="bi bi-arrow-down-up ms-2"></i>
         </button>
@@ -135,6 +143,33 @@ const ViewSingleAccountPage = () => {
           <i className="bi bi-pencil-square me-2"></i>
         </button>
       </div>
+
+      {showDialog && (
+        <div className="modal fade show d-block" tabIndex={-1} role="dialog">
+          <div className="modal-dialog">
+            <div className="modal-content" style={{background: colors.secondary}}>
+              <div className="modal-header">
+                <h5 className="modal-title">Account Disabled</h5>
+                <button
+                  className="btn-close bg-light"
+                  onClick={() => setShowDialog(false)}
+                ></button>
+              </div>
+              <div className="modal-body">
+                <p>This account is disabled and cannot perform transactions.</p>
+              </div>
+              <div className="modal-footer">
+                <button
+                  className="btn btn-light"
+                  onClick={() => setShowDialog(false)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Show UpdateAccountForm as a Modal */}
       {showEditForm && account && (

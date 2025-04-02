@@ -19,10 +19,16 @@ async def fund_transfer(fundTransfer: FundTransfer):
     source = await account_services.get_account_by_id(fundTransfer.sourceAccountId)
     if source == None:
         raise HTTPException(status_code=400, detail='Source account does not exists!')
+    
+    if not source.active:
+        raise HTTPException(status_code=400, detail='Source Account is disabled!')
 
     target = await account_services.get_account_by_id(fundTransfer.targetAccountId)
     if target == None:
         raise HTTPException(status_code=400, detail='Target account does not exists!')
+    
+    if not target.active:
+        raise HTTPException(status_code=400, detail='Target Account is disabled!')
 
     success = await fund_transfer_service.process_fund_transfer(fundTransfer)
     if not success:

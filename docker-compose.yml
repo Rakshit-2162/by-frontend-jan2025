@@ -1,0 +1,28 @@
+services:
+  backend:
+    image: rakshit2162/banking-app-backend
+    container_name: banking-backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=mongodb+srv://rakshitvaja2162:maRcsyvVpC5nbIV9@cluster0.ybcc8.mongodb.net/
+    networks:
+      - banking-network
+
+  frontend:
+    image: rakshit2162/banking-app
+    container_name: banking-frontend
+    restart: always
+    environment:
+      - VITE_API_BASE_URL=http://backend:8000
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    networks:
+      - banking-network
+
+networks:
+  banking-network:
+    driver: bridge

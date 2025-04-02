@@ -7,14 +7,14 @@ const AccountDetailsCard = ({ account }: { account: Account }) => {
     <>
       <div className="container-fluid">
         <div
-          className="card p-3 m-3 rounded-3"
+          className="card p-3 m-3 rounded-4"
           style={{ background: colors.secondary, color: "white" }}
         >
           <div className="row g-0">
             {/* Account Number */}
             <div className="col me-3 text-center">
               <div
-                className="p-3 rounded-3 fw-semibold fs-4"
+                className="p-2 rounded-3 fw-semibold fs-5"
                 style={{ background: colors.primary }}
               >
                 {account.id}
@@ -29,7 +29,7 @@ const AccountDetailsCard = ({ account }: { account: Account }) => {
 
             {/* Account holder name & balance */}
             <div className="col-10">
-              <div className="fw-medium fs-4 pb-3"> {account.name}</div>
+              <div className="fw-medium fs-4 pb-2"> {account.name}</div>
               <div className="row">
                 <div className="col-2 text-light text-opacity-75">
                   ₹: {account.balance.toLocaleString()}

@@ -9,7 +9,7 @@ import FundTransferForm from "../../components/forms/FundTransferForm";
 const ViewAllFundTransfersPage = () => {
   const [transfers, setTransfers] = useState<FundTransfer[]>([]);
   const [showModal, setShowModal] = useState(false);
-
+  
   useEffect(() => {
     fetchFundTransfers()
   }, []);
